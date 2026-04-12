@@ -33,7 +33,7 @@ export function DataTable<T extends { id: string | number }>({
   onSelectionChange
 }: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const totalPages = Math.ceil((data?.length || 0) / itemsPerPage);
   
   if (!data || data.length === 0) {
@@ -73,82 +73,86 @@ export function DataTable<T extends { id: string | number }>({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="p-[2px] rounded-xl bg-gradient-to-br from-slate-200 via-slate-100 to-slate-200/50 dark:from-slate-800 dark:via-[#1e1e2d] dark:to-slate-800/50 shadow-md shadow-slate-200/50 dark:shadow-none flex flex-col"
+      className="p-[2px] rounded-xl bg-gradient-to-br from-slate-200 via-slate-100 to-slate-200/50 dark:from-slate-800 dark:via-[#1e1e2d] dark:to-slate-800/50 shadow-md shadow-slate-200/50 dark:shadow-none flex flex-col min-w-0"
     >
-      <div className="rounded-xl overflow-hidden bg-white dark:bg-[#1e1e2d] relative border border-slate-200/50 dark:border-slate-800/50">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {enableSelection && (
-                <TableHead className="w-12 text-center pl-4">
-                  <input 
-                    type="checkbox" 
-                    checked={isAllSelected}
-                    ref={input => {
-                      if (input) input.indeterminate = someSelected;
-                    }}
-                    onChange={handleSelectAll}
-                    className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer accent-indigo-600"
-                  />
-                </TableHead>
-              )}
-              {columns.map((column, index) => (
-                <TableHead key={index}>{column.header}</TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody className="[&_tr:last-child]:border-0 bg-white">
-            <AnimatePresence mode="popLayout">
-              {currentData.map((row, i) => {
-                const isSelected = selectedIds.includes(row.id);
-                return (
-                  <motion.tr
-                    key={row.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.2, delay: i * 0.05 }}
-                    className={`group border-b border-slate-200 dark:border-slate-800 transition-colors hover:bg-slate-50 dark:hover:bg-[#2a2a3c] ${isSelected ? "bg-indigo-50/40 dark:bg-indigo-900/20" : ""}`}
-                  >
-                    {enableSelection && (
-                      <TableCell className="text-center pl-4 w-12">
-                        <input 
-                          type="checkbox" 
-                          checked={isSelected}
-                          onChange={() => handleSelectRow(row.id)}
-                          className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer accent-indigo-600"
-                        />
-                      </TableCell>
-                    )}
-                    {columns.map((column, colIndex) => (
-                      <TableCell key={colIndex}>
-                        {column.cell ? column.cell(row) : (row[column.accessorKey] as ReactNode)}
-                      </TableCell>
-                    ))}
-                  </motion.tr>
-                )
-              })}
-            </AnimatePresence>
-          </TableBody>
-        </Table>
+      <div className="rounded-2xl overflow-hidden glass-panel relative">
+        <div className="overflow-x-auto custom-scrollbar">
+          <Table>
+            <TableHeader className="bg-slate-50/80 dark:bg-slate-900/40 backdrop-blur-md">
+              <TableRow>
+                {enableSelection && (
+                  <TableHead className="w-12 text-center pl-4">
+                    <input 
+                      type="checkbox" 
+                      checked={isAllSelected}
+                      ref={input => {
+                        if (input) input.indeterminate = someSelected;
+                      }}
+                      onChange={handleSelectAll}
+                      className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer accent-indigo-600"
+                    />
+                  </TableHead>
+                )}
+                {columns.map((column, index) => (
+                  <TableHead key={index} className="font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">{column.header}</TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody className="[&_tr:last-child]:border-0">
+              <AnimatePresence mode="popLayout">
+                {currentData.map((row, i) => {
+                  const isSelected = selectedIds.includes(row.id);
+                  return (
+                    <motion.tr
+                      key={row.id}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2, delay: i * 0.05 }}
+                      className={`group border-b border-slate-100 dark:border-white/10 transition-colors hover:bg-slate-50/50 dark:hover:bg-white/5 ${isSelected ? "bg-indigo-50/60 dark:bg-indigo-500/10" : ""}`}
+                    >
+                      {enableSelection && (
+                        <TableCell className="text-center pl-4 w-12">
+                          <input 
+                            type="checkbox" 
+                            checked={isSelected}
+                            onChange={() => handleSelectRow(row.id)}
+                            className="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer accent-indigo-600"
+                          />
+                        </TableCell>
+                      )}
+                      {columns.map((column, colIndex) => (
+                        <TableCell key={colIndex} className="py-4 whitespace-nowrap">
+                          {column.cell ? column.cell(row) : (row[column.accessorKey] as ReactNode)}
+                        </TableCell>
+                      ))}
+                    </motion.tr>
+                  )
+                })}
+              </AnimatePresence>
+            </TableBody>
+          </Table>
+        </div>
         
         {totalPages > 1 && (
-          <div className="flex justify-between items-center px-4 py-3 bg-slate-50/80 dark:bg-[#1e1e2d] border-t border-slate-100 dark:border-slate-800 mt-2">
-            <div className="text-sm text-slate-500 dark:text-slate-400">
-              Page <span className="font-semibold text-slate-700 dark:text-slate-300">{currentPage}</span> of <span className="font-semibold text-slate-700 dark:text-slate-300">{totalPages}</span>
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-5 py-4 bg-slate-50/50 dark:bg-slate-900/30 border-t border-slate-200/50 dark:border-white/10">
+            <div className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+              Showing <span className="font-bold text-slate-700 dark:text-slate-200">{currentData.length}</span> of <span className="font-bold text-slate-700 dark:text-slate-200">{data.length}</span> items
+              <span className="mx-2">|</span>
+              Page <span className="font-bold text-slate-700 dark:text-slate-200">{currentPage}</span> of <span className="font-bold text-slate-700 dark:text-slate-200">{totalPages}</span>
             </div>
-            <div className="flex space-x-1">
+            <div className="flex space-x-2">
               <button 
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1 bg-white dark:bg-[#2a2a3c] border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium rounded hover:bg-slate-50 dark:hover:bg-[#34344a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-all active:scale-95"
               >
                 Prev
               </button>
               <button 
                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 bg-white dark:bg-[#2a2a3c] border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium rounded hover:bg-slate-50 dark:hover:bg-[#34344a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-all active:scale-95"
               >
                 Next
               </button>

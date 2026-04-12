@@ -7,6 +7,8 @@ import {
 } from "recharts";
 import toast from "react-hot-toast";
 
+import { RepositoryDetailSkeleton } from "../components/Skeletons";
+
 export function RepositoryDetails() {
   const { id } = useParams<{ id: string }>();
   const [response, setResponse] = useState<any>(null);
@@ -37,16 +39,12 @@ export function RepositoryDetails() {
   }, [id]);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
-      </div>
-    );
+    return <RepositoryDetailSkeleton />;
   }
 
   if (error || !response) {
     return (
-      <div className="p-8 max-w-7xl mx-auto w-full text-center">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full text-center">
         <AlertTriangle className="w-12 h-12 text-rose-500 mx-auto mb-4" />
         <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200">Error Loading Repository Details</h2>
         <p className="text-slate-500 mt-2">{error || "Repository might not exist."}</p>
@@ -80,27 +78,27 @@ function WaitingDetails({ data }: { data: any }) {
   const contribData = top_contributors.map((name: string, i: number) => ({ name, value: 100 - i * 15 }));
 
   return (
-    <div className="p-8 max-w-7xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-8">
         <Link to="/repositories/waiting" className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors mb-4">
           <ArrowLeft className="w-4 h-4" /> Back to Waiting Repositories
         </Link>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 mb-2">
               {metadata.name}
             </h1>
-            <p className="flex items-center gap-2 text-slate-500">
-              <a href={metadata.url} target="_blank" rel="noreferrer" className="hover:underline hover:text-indigo-600 font-mono text-sm">
+            <p className="flex flex-wrap items-center gap-2 text-slate-500">
+              <a href={metadata.url} target="_blank" rel="noreferrer" className="hover:underline hover:text-indigo-600 font-mono text-xs sm:text-sm truncate max-w-xs sm:max-w-none">
                 {metadata.url}
               </a>
-              <span className="px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-700 uppercase tracking-wider">
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 uppercase tracking-wider">
                 {metadata.visibility}
               </span>
             </p>
           </div>
-          <div className="text-right">
-            <div className={`text-2xl font-black ${analysis.risk_level === 'High' ? 'text-rose-500' : analysis.risk_level === 'Medium' ? 'text-amber-500' : 'text-emerald-500'}`}>
+          <div className="md:text-right">
+            <div className={`text-xl sm:text-2xl font-black ${analysis.risk_level === 'High' ? 'text-rose-500' : analysis.risk_level === 'Medium' ? 'text-amber-500' : 'text-emerald-500'}`}>
               Risk: {analysis.risk_level}
             </div>
             <div className="text-sm font-medium text-slate-500">Score {analysis.risk_score} / 10</div>
@@ -285,26 +283,26 @@ function MigratedDetails({ gitlab, github }: { gitlab: any, github: any }) {
   const languageData = github.languages ? Object.entries(github.languages).map(([name, value]) => ({ name, value })) : [];
 
   return (
-    <div className="p-8 max-w-7xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-8">
         <Link to="/repositories/migrated" className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-emerald-600 transition-colors mb-4">
           <ArrowLeft className="w-4 h-4" /> Back to Migrated Repositories
         </Link>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-500 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-500 mb-2">
                Post-Migration Insights: {github.metadata.name.split("/").pop()}
             </h1>
-            <p className="flex items-center gap-2 text-slate-500">
-              <a href={github.metadata.url} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline hover:text-emerald-600 font-mono text-sm">
+            <p className="flex flex-wrap items-center gap-2 text-slate-500">
+              <a href={github.metadata.url} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline hover:text-emerald-600 font-mono text-xs sm:text-sm truncate max-w-xs sm:max-w-none">
                 <Terminal className="w-4 h-4" /> {github.metadata.url}
               </a>
-              <span className="px-2 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-700 uppercase tracking-wider">
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 uppercase tracking-wider">
                 MIGRATED
               </span>
             </p>
           </div>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             <StatSmall icon={<Terminal/>} label="Stars" value={github.stats.stars} />
             <StatSmall icon={<GitBranch/>} label="Forks" value={github.stats.forks} />
             <StatSmall icon={<AlertTriangle/>} label="Issues" value={github.stats.open_issues_count} />

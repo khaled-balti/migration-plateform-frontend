@@ -59,12 +59,12 @@ export function HistoryPage({ type }: { type: "all" | "my" }) {
   };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto w-full">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full">
       <div className="mb-10">
-        <h1 className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 mb-2">
+        <h1 className="text-2xl sm:text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 mb-2">
           {type === "all" ? "Organization Activity log" : "My Recent Activity"}
         </h1>
-        <p className="text-slate-500 dark:text-slate-400">
+        <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400">
           Trace back recent operations executed across the migration platform.
         </p>
       </div>

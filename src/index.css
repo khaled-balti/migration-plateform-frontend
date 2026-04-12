@@ -5,9 +5,64 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 transition-colors duration-300;
+    @apply text-slate-800 transition-colors duration-200 bg-[#fafafa] antialiased;
+    font-family: 'Inter', sans-serif;
   }
+  
   .dark body {
-    @apply bg-[#12121e] text-slate-200;
+    @apply text-slate-300 bg-[#0a0a0a];
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white border border-slate-200 shadow-sm;
+  }
+  
+  .dark .glass-panel {
+    @apply bg-[#111] border-[#333] shadow-none;
+  }
+
+  .premium-card {
+    @apply bg-white border border-slate-200 shadow-sm rounded-xl overflow-hidden transition-colors hover:border-slate-300;
+  }
+  
+  .dark .premium-card {
+    @apply bg-[#111] border-[#333] shadow-none dark:hover:border-[#444];
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden bg-slate-900 text-white font-medium shadow-sm hover:bg-slate-800 transition-colors duration-200 active:scale-[0.98];
+  }
+  
+  .dark .btn-primary {
+    @apply bg-white text-slate-900 hover:bg-slate-100;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply text-slate-900;
+  }
+  
+  .dark .text-gradient {
+    @apply text-white;
+  }
+
+  /* Custom scrollbar for webkit */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 rounded-full dark:bg-[#333] hover:bg-slate-300 dark:hover:bg-[#444] transition-colors;
   }
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Lock, ArrowRight, Globe, CodeSquare, AlertCircle } from "lucide-react";
+import { Mail, Lock, ArrowRight, CodeSquare, AlertCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/AuthContext";
 
@@ -59,7 +59,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-[#f8f9fa]">
+    <div className="min-h-screen w-full flex bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-slate-100 transition-colors duration-300">
       {/* Left Side - Brand & Graphics */}
       <div className="hidden lg:flex flex-col w-1/2 p-12 relative overflow-hidden bg-[#1e1e2d] text-white">
         <div className="absolute inset-0 bg-gradient-to-br from-[#1e1e2d] via-indigo-900/40 to-[#1e1e2d] z-0" />
@@ -94,11 +94,11 @@ export function LoginPage() {
       </div>
 
       {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-12 bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <div className="w-full max-w-sm">
           <div className="text-center lg:text-left mb-10">
-            <h2 className="text-3xl font-bold text-slate-900 mb-3">Welcome back</h2>
-            <p className="text-slate-500">Sign in to your account to continue</p>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">Welcome back</h2>
+            <p className="text-slate-500 dark:text-slate-400">Sign in to your account to continue</p>
           </div>
 
           <form className="space-y-5" onSubmit={handleLogin} noValidate>
@@ -111,18 +111,18 @@ export function LoginPage() {
               )}
             </AnimatePresence>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700 ml-1">Email Address</label>
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300 ml-1">Email Address</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <Mail className={`h-5 w-5 ${errors.email ? 'text-rose-400' : 'text-slate-400'}`} />
+                  <Mail className={`h-5 w-5 ${errors.email ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'}`} />
                 </div>
                 <input 
                   type="email" 
                   value={email}
                   onChange={(e) => {setEmail(e.target.value); if(errors.email) setErrors({...errors, email: undefined})}}
                   placeholder="name@company.com" 
-                  className={`w-full pl-11 pr-4 py-3 bg-white border rounded-xl focus:ring-2 outline-none transition-all placeholder:text-slate-400 shadow-sm
-                    ${errors.email ? 'border-rose-300 focus:ring-rose-200 focus:border-rose-400' : 'border-slate-200 focus:ring-indigo-500/20 focus:border-indigo-500'}`}
+                  className={`w-full pl-11 pr-4 py-2.5 bg-white dark:bg-[#121212] border rounded-lg focus:ring-2 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 shadow-sm text-sm
+                    ${errors.email ? 'border-rose-400 focus:ring-rose-400/20 focus:border-rose-400 dark:border-rose-500/50' : 'border-slate-200 dark:border-slate-800 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-500'}`}
                 />
               </div>
               <AnimatePresence>
@@ -137,20 +137,20 @@ export function LoginPage() {
 
             <div className="space-y-1.5">
               <div className="flex items-center justify-between ml-1">
-                <label className="text-sm font-medium text-slate-700">Password</label>
-                <Link to="/forgot-password" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Forgot password?</Link>
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
+                <Link to="/forgot-password" className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">Forgot password?</Link>
               </div>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <Lock className={`h-5 w-5 ${errors.password ? 'text-rose-400' : 'text-slate-400'}`} />
+                  <Lock className={`h-5 w-5 ${errors.password ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'}`} />
                 </div>
                 <input 
                   type="password" 
                   value={password}
                   onChange={(e) => {setPassword(e.target.value); if(errors.password) setErrors({...errors, password: undefined})}}
                   placeholder="••••••••" 
-                  className={`w-full pl-11 pr-4 py-3 bg-white border rounded-xl focus:ring-2 outline-none transition-all placeholder:text-slate-400 shadow-sm
-                    ${errors.password ? 'border-rose-300 focus:ring-rose-200 focus:border-rose-400' : 'border-slate-200 focus:ring-indigo-500/20 focus:border-indigo-500'}`}
+                  className={`w-full pl-11 pr-4 py-2.5 bg-white dark:bg-[#121212] border rounded-lg focus:ring-2 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 shadow-sm text-sm
+                    ${errors.password ? 'border-rose-400 focus:ring-rose-400/20 focus:border-rose-400 dark:border-rose-500/50' : 'border-slate-200 dark:border-slate-800 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-500'}`}
                 />
               </div>
               <AnimatePresence>
@@ -163,29 +163,16 @@ export function LoginPage() {
               </AnimatePresence>
             </div>
 
-            <div className="pt-2">
-              <button disabled={isLoading} type="submit" className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md shadow-indigo-500/20 transition-all active:scale-[0.98] disabled:opacity-70">
+            <div className="pt-4">
+              <button disabled={isLoading} type="submit" className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm transition-colors active:scale-[0.98] disabled:opacity-70 text-sm">
                 {isLoading ? 'Signing in...' : 'Sign In'}
                 {!isLoading && <ArrowRight className="w-4 h-4" />}
               </button>
             </div>
           </form>
-
-          <div className="mt-8 flex items-center justify-center gap-3">
-            <div className="h-px w-full bg-slate-200" />
-            <span className="text-sm text-slate-400 font-medium">OR</span>
-            <div className="h-px w-full bg-slate-200" />
-          </div>
-
-          <div className="mt-8">
-            <button className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold py-3 px-4 rounded-xl shadow-sm transition-all active:scale-[0.98]">
-              <Globe className="w-5 h-5" />
-              Continue with Google
-            </button>
-          </div>
           
-          <p className="mt-10 text-center text-sm text-slate-500">
-            Don't have an account? <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">Contact admin</a>
+          <p className="mt-10 text-center text-sm text-slate-500 dark:text-slate-400">
+            Don't have an account? <a href="#" className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">Contact admin</a>
           </p>
         </div>
       </div>

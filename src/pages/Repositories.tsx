@@ -5,6 +5,7 @@ import type { Column } from "../components/DataTable";
 import { ExternalLink, Eye, ArrowRightCircle, RefreshCw, Send, Terminal } from "lucide-react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useAuth } from "../providers/AuthContext";
 
 interface Repo {
   id: string;
@@ -51,6 +52,9 @@ const migratedColumns: Column<Repo>[] = [
 ];
 
 export function RepositoriesPage({ type }: { type: "migrated" | "waiting" }) {
+  const { user } = useAuth();
+  const hasRepoPermission = user?.permissions?.includes("repositories") ?? false;
+
   const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Repo[]>([]);
@@ -149,17 +153,19 @@ export function RepositoriesPage({ type }: { type: "migrated" | "waiting" }) {
     ...getSharedColumns(),
     { header: "Actions", accessorKey: "id", cell: (row) => (
       <div className="flex items-center gap-3">
-        <button 
-          onClick={() => handleMigrate([row.id])}
-          className="group flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 shadow shadow-indigo-500/20 transition-all hover:shadow-indigo-500/40"
-        >
-          <ArrowRightCircle className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-          Migrate
-        </button>
         <Link to={`/repositories/details/${row.id}`} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 hover:text-slate-900 transition-colors border border-slate-200 shadow-sm">
           <Eye className="w-4 h-4" />
           Details
         </Link>
+        {hasRepoPermission && (
+          <button 
+            onClick={() => handleMigrate([row.id])}
+            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 shadow shadow-indigo-500/20 transition-all hover:shadow-indigo-500/40"
+          >
+            <ArrowRightCircle className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+            Migrate
+          </button>
+        )}
       </div>
     )}
   ];
@@ -167,31 +173,31 @@ export function RepositoriesPage({ type }: { type: "migrated" | "waiting" }) {
   const columns = type === "migrated" ? migratedColumns : waitingColumns;
   
   return (
-    <div className="p-8 max-w-7xl mx-auto w-full">
-      <div className="mb-8 flex justify-between items-end">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+      <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 mb-2">
             {type === "migrated" ? "Migrated Repositories" : "Waiting Repositories"}
           </h1>
-          <p className="text-slate-500 dark:text-slate-400">
+          <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400">
             Manage your {type === "migrated" ? "successfully migrated" : "pending"} source code repositories.
           </p>
         </div>
         
-        <div className="flex items-center gap-3">
-          {selectedIds.length > 0 && (
+        <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto sm:overflow-visible pb-2 sm:pb-0">
+          {selectedIds.length > 0 && hasRepoPermission && (
             <button 
               onClick={() => handleMigrate(selectedIds)}
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white rounded-lg font-semibold shadow-md shadow-indigo-500/20 transition-all hover:shadow-indigo-500/40 group animate-in fade-in slide-in-from-right-4"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white rounded-lg font-semibold shadow-md shadow-indigo-500/20 transition-all hover:shadow-indigo-500/40 group animate-in fade-in slide-in-from-right-4 whitespace-nowrap"
             >
               <Send className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               Migrate All ({selectedIds.length})
             </button>
           )}
-          {type === "waiting" && (
+          {type === "waiting" && hasRepoPermission && (
             <button 
               onClick={syncRepositories}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-medium shadow-sm transition-colors active:scale-95"
+              className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-medium shadow-sm transition-colors active:scale-95 whitespace-nowrap"
             >
               <RefreshCw className={`w-4 h-4 text-slate-500 ${isLoading ? 'animate-spin' : ''}`} />
               Refresh

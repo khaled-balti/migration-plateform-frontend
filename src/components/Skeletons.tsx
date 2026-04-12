@@ -54,3 +54,82 @@ export function HistorySkeleton() {
     </motion.div>
   );
 }
+export function RepositoryDetailSkeleton() {
+  return (
+    <div className="space-y-8 animate-pulse">
+      <div className="flex justify-between items-start">
+        <div className="space-y-3 w-1/3">
+          <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded-lg w-full"></div>
+          <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-2/3"></div>
+        </div>
+        <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded-xl w-32"></div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[1, 2, 3].map(i => (
+          <div key={i} className="h-32 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-slate-800 rounded-2xl p-6"></div>
+        ))}
+      </div>
+      <div className="h-96 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-slate-800 rounded-2xl"></div>
+    </div>
+  );
+}
+
+export function PipelineDetailSkeleton() {
+  return (
+    <div className="max-w-5xl mx-auto space-y-8 animate-pulse">
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-2xl"></div>
+        <div className="space-y-2 flex-1">
+          <div className="h-7 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
+          <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-1/3"></div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="h-64 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-slate-800 rounded-2xl"></div>
+        <div className="h-64 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-slate-800 rounded-2xl"></div>
+      </div>
+      <div className="h-48 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-slate-800 rounded-2xl"></div>
+    </div>
+  );
+}
+
+export function PipelineApprovalSkeleton() {
+  return (
+    <div className="animate-pulse space-y-8">
+      <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded-lg w-1/4"></div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="h-[600px] bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-slate-800 rounded-2xl"></div>
+        <div className="space-y-6">
+          <div className="h-64 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-slate-800 rounded-2xl"></div>
+          <div className="h-80 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-slate-800 rounded-2xl"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SettingsSkeleton() {
+  return (
+    <div className="max-w-4xl mx-auto space-y-10 animate-pulse">
+      <div className="space-y-2">
+        <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
+        <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-1/2"></div>
+      </div>
+      <div className="space-y-8">
+        {[1, 2].map(i => (
+          <div key={i} className="bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-slate-800 rounded-2xl p-8 space-y-6">
+            <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-1/5"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[1, 2, 3, 4].map(j => (
+                <div key={j} className="space-y-2">
+                  <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-1/3"></div>
+                  <div className="h-12 bg-slate-50 dark:bg-slate-900 rounded-xl"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

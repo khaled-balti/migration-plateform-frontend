@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { Sidebar } from './components/Sidebar';
 import { RepositoriesPage } from './pages/Repositories';
 import { PipelinesPage } from './pages/Pipelines';
+import { PipelineApprovalPage } from './pages/PipelineApproval';
 import { CredentialsPage } from './pages/Credentials';
 import { UsersPage } from './pages/Users';
 import { HistoryPage } from './pages/History';
@@ -15,6 +16,7 @@ import { ThemeProvider } from './providers/ThemeProvider';
 import { AuthProvider } from './providers/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { RepositoryDetails } from './pages/RepositoryDetails';
+import { PipelineDetails } from './pages/PipelineDetails';
 
 function App() {
   return (
@@ -43,6 +45,8 @@ function App() {
                 <Route index element={<Navigate to="migrated" replace />} />
                 <Route path="migrated" element={<PipelinesPage type="migrated" />} />
                 <Route path="waiting" element={<PipelinesPage type="waiting" />} />
+                <Route path="approve/:id" element={<PipelineApprovalPage />} />
+                <Route path="details/:id" element={<PipelineDetails />} />
               </Route>
 
               <Route path="history">
