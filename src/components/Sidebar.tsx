@@ -15,8 +15,9 @@ import {
   X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
+import { ChatbotPopup } from './ChatbotPopup';
 
 export function Sidebar() {
   const [openRepos, setOpenRepos] = useState(true);
@@ -316,6 +317,8 @@ export function Sidebar() {
       <main className="flex-1 h-screen overflow-y-auto relative z-10 w-full text-slate-800 dark:text-slate-200 pt-16 lg:pt-0">
         <Outlet />
       </main>
+
+      <ChatbotPopup />
     </div>
   );
 }
