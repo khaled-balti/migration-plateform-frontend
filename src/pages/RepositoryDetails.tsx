@@ -56,7 +56,7 @@ export function RepositoryDetails() {
   }
 
   if (response.type === 'migrated') {
-    return <MigratedDetails gitlab={response.gitlab_data} github={response.github_data} />;
+    return <MigratedDetails gitlab={response.gitlab_data} github={response.github_data} loss={response.loss} />;
   }
 
   return <WaitingDetails data={response.data} />;
@@ -257,10 +257,10 @@ function WaitingDetails({ data }: { data: any }) {
 // ----------------------------------------------------------------------
 // MIGRATED DETAILS PORTION (Post-Migration)
 // ----------------------------------------------------------------------
-function MigratedDetails({ gitlab, github }: { gitlab: any, github: any }) {
+function MigratedDetails({ gitlab, github, loss }: { gitlab: any, github: any, loss?: number }) {
   const gitlabTotalCommits = gitlab.stats.total_commits || 1; 
   const githubTotalCommits = github.stats.total_commits || 0; 
-  const commitLossRate = 100 - ((githubTotalCommits / gitlabTotalCommits) * 100);
+  const commitLossRate = loss ?? 0;
 
   const gitlabContribs = gitlab.stats.contributors || 0;
   const githubContribs = github.stats.contributors_count || 0;
