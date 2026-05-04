@@ -12,11 +12,14 @@ import { LoginPage } from './pages/Login';
 import { ForgotPasswordPage } from './pages/ForgotPassword';
 import { VerifyOTPPage } from './pages/VerifyOTP';
 import { ResetPasswordPage } from './pages/ResetPassword';
+import { RegisterPage } from './pages/Register';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { AuthProvider } from './providers/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { RepositoryDetails } from './pages/RepositoryDetails';
 import { PipelineDetails } from './pages/PipelineDetails';
+import { LandingPage } from './pages/Landing';
+import { NotFound } from './pages/NotFound';
 
 function App() {
   return (
@@ -24,15 +27,17 @@ function App() {
       <AuthProvider>
         <Toaster position="top-right" />
         <BrowserRouter>
-        <Routes>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/verify-otp" element={<VerifyOTPPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Sidebar />}>
-              <Route index element={<Navigate to="/history/all" replace />} />
+            <Route path="/app" element={<Sidebar />}>
+              <Route index element={<Navigate to="/app/history/my" replace />} />
               
               <Route path="repositories" element={<ProtectedRoute requiredPermission="repositories" />}>
                 <Route index element={<Navigate to="migrated" replace />} />
@@ -50,7 +55,7 @@ function App() {
               </Route>
 
               <Route path="history">
-                <Route index element={<Navigate to="all" replace />} />
+                <Route index element={<Navigate to="/app/history/my" replace />} />
                 <Route path="all" element={<HistoryPage type="all" />} />
                 <Route path="my" element={<HistoryPage type="my" />} />
               </Route>
@@ -65,6 +70,9 @@ function App() {
               <Route path="settings" element={<SettingsPage />} />
             </Route>
           </Route>
+
+          {/* Catch-all 404 */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
       </AuthProvider>

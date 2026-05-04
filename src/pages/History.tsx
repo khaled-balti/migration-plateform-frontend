@@ -69,7 +69,7 @@ export function HistoryPage({ type }: { type: "all" | "my" }) {
         </p>
       </div>
 
-      {isLoading ? (
+      {isLoading && data.length === 0 ? (
         <HistorySkeleton />
       ) : (
         <div className="relative border-l border-slate-200 dark:border-slate-800 ml-4 space-y-8 pb-8">

@@ -36,14 +36,9 @@ const getSharedColumns = (): Column<Repo>[] => [
 const migratedColumns: Column<Repo>[] = [
   ...getSharedColumns(),
   { header: "Migration Date", accessorKey: "migration_date", cell: (row) => <span className="text-slate-600 text-sm font-medium">{row.migration_date}</span> },
-  { header: "Migrated By", accessorKey: "user", cell: (row) => (
-    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700">
-      {row.user}
-    </span>
-  )},
   { header: "Actions", accessorKey: "id", cell: (row) => (
     <div className="flex items-center gap-2">
-      <Link to={`/repositories/details/${row.id}`} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 hover:text-slate-900 transition-colors border border-slate-200 shadow-sm">
+      <Link to={`/app/repositories/details/${row.id}`} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 hover:text-slate-900 transition-colors border border-slate-200 shadow-sm">
         <Eye className="w-4 h-4" />
         Details
       </Link>
@@ -82,20 +77,17 @@ export function RepositoriesPage({ type }: { type: "migrated" | "waiting" }) {
   };
   
   const syncRepositories = async () => {
-    const loadingToast = toast.loading("Syncing with GitLab...");
     setIsLoading(true);
     try {
       const res = await fetch('/api/repositories/sync/', { method: 'POST' });
       const json = await res.json();
       if (!res.ok) {
-        toast.error("Sync Error: " + (json.error || "Failed to trigger sync"), { id: loadingToast });
-      } else {
-        toast.success("Repositories Synced Successfully", { id: loadingToast });
+        toast.error("Sync Error: " + (json.error || "Failed to trigger sync"));
       }
       await fetchRepositories();
     } catch(err: any) {
       console.error("Failed to sync repositories:", err);
-      toast.error("Network Error: " + err.message, { id: loadingToast });
+      toast.error("Network Error: " + err.message);
       setIsLoading(false);
     }
   };
@@ -146,14 +138,14 @@ export function RepositoriesPage({ type }: { type: "migrated" | "waiting" }) {
   };
 
   useEffect(() => {
-    fetchRepositories();
+    syncRepositories();
   }, [type]);
 
   const waitingColumns: Column<Repo>[] = [
     ...getSharedColumns(),
     { header: "Actions", accessorKey: "id", cell: (row) => (
       <div className="flex items-center gap-3">
-        <Link to={`/repositories/details/${row.id}`} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 hover:text-slate-900 transition-colors border border-slate-200 shadow-sm">
+        <Link to={`/app/repositories/details/${row.id}`} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 hover:text-slate-900 transition-colors border border-slate-200 shadow-sm">
           <Eye className="w-4 h-4" />
           Details
         </Link>
@@ -194,7 +186,7 @@ export function RepositoriesPage({ type }: { type: "migrated" | "waiting" }) {
               Migrate All ({selectedIds.length})
             </button>
           )}
-          {type === "waiting" && hasRepoPermission && (
+          {hasRepoPermission && (
             <button 
               onClick={syncRepositories}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-medium shadow-sm transition-colors active:scale-95 whitespace-nowrap"
@@ -206,7 +198,7 @@ export function RepositoriesPage({ type }: { type: "migrated" | "waiting" }) {
         </div>
       </div>
       
-      {isLoading ? (
+      {isLoading && data.length === 0 ? (
         <TableSkeleton />
       ) : (
         <DataTable 
@@ -215,6 +207,7 @@ export function RepositoriesPage({ type }: { type: "migrated" | "waiting" }) {
           enableSelection={type === "waiting"} 
           selectedIds={selectedIds}
           onSelectionChange={setSelectedIds}
+          isLoading={isLoading}
         />
       )}
       

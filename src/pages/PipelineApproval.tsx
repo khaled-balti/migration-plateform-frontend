@@ -45,7 +45,7 @@ export function PipelineApprovalPage() {
       
       if (!res.ok) {
         toast.error("Failed to fetch pipeline details");
-        navigate("/pipelines/waiting");
+        navigate("/app/pipelines/waiting");
         return;
       }
 
@@ -75,7 +75,7 @@ export function PipelineApprovalPage() {
       }
     } catch (err) {
       toast.error("Network error");
-      navigate("/pipelines/waiting");
+      navigate("/app/pipelines/waiting");
     } finally {
       setIsFetching(false);
     }
@@ -140,7 +140,7 @@ export function PipelineApprovalPage() {
             setMigratedResult(result);
             toast.success("Pipeline migrated successfully!");
             setTimeout(() => {
-              navigate("/pipelines/migrated");
+              navigate("/app/pipelines/migrated");
             }, 3000);
           }
         } catch (e) {

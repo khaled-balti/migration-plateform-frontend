@@ -23,6 +23,7 @@ interface DataTableProps<T> {
   enableSelection?: boolean
   selectedIds?: (string | number)[]
   onSelectionChange?: (selectedIds: (string | number)[]) => void
+  isLoading?: boolean
 }
 
 export function DataTable<T extends { id: string | number }>({ 
@@ -30,7 +31,8 @@ export function DataTable<T extends { id: string | number }>({
   data, 
   enableSelection = false,
   selectedIds = [],
-  onSelectionChange
+  onSelectionChange,
+  isLoading = false
 }: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -76,6 +78,29 @@ export function DataTable<T extends { id: string | number }>({
       className="p-[2px] rounded-xl bg-gradient-to-br from-slate-200 via-slate-100 to-slate-200/50 dark:from-slate-800 dark:via-[#1e1e2d] dark:to-slate-800/50 shadow-md shadow-slate-200/50 dark:shadow-none flex flex-col min-w-0"
     >
       <div className="rounded-2xl overflow-hidden glass-panel relative">
+        <AnimatePresence>
+          {isLoading && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute top-0 left-0 right-0 h-[3px] overflow-hidden bg-indigo-100/50 dark:bg-indigo-950/20 z-50"
+            >
+              <motion.div
+                className="h-full bg-indigo-600 shadow-[0_0_10px_rgba(79,70,229,0.5)]"
+                animate={{
+                  x: ["-100%", "200%"]
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 1.2,
+                  ease: "easeInOut"
+                }}
+                style={{ width: "30%" }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div className="overflow-x-auto custom-scrollbar">
           <Table>
             <TableHeader className="bg-slate-50/80 dark:bg-slate-900/40 backdrop-blur-md">

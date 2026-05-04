@@ -50,7 +50,7 @@ export function LoginPage() {
       }
       
       login(data.token);
-      navigate("/repositories/migrated");
+      navigate("/app");
     } catch (err: any) {
       setErrors({ general: err.message });
     } finally {
@@ -104,9 +104,20 @@ export function LoginPage() {
           <form className="space-y-5" onSubmit={handleLogin} noValidate>
             <AnimatePresence>
               {errors.general && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} className="p-3 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl text-sm font-medium flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4" />
-                  {errors.general}
+                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} className="p-3 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl text-sm font-medium flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.general}
+                  </div>
+                  {errors.general.includes("verify your email") && (
+                    <button 
+                      type="button"
+                      onClick={() => navigate("/register", { state: { step: "verification", email } })}
+                      className="text-xs text-indigo-600 hover:underline text-left font-semibold"
+                    >
+                      Verify your account now →
+                    </button>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -172,7 +183,7 @@ export function LoginPage() {
           </form>
           
           <p className="mt-10 text-center text-sm text-slate-500 dark:text-slate-400">
-            Don't have an account? <a href="#" className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">Contact admin</a>
+            Don't have an account? <Link to="/register" className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">Register your company</Link>
           </p>
         </div>
       </div>

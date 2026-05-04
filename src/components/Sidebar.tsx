@@ -102,7 +102,7 @@ export function Sidebar() {
             {openRepos && (
               <div className="mt-1 flex flex-col gap-0.5 pl-10 pr-2">
                 <NavLink
-                  to="/repositories/migrated"
+                  to="/app/repositories/migrated"
                   onClick={closeMobileSidebar}
                   className={({ isActive }) => twMerge(
                     clsx(
@@ -114,7 +114,7 @@ export function Sidebar() {
                   Migrated repos
                 </NavLink>
                 <NavLink
-                  to="/repositories/waiting"
+                  to="/app/repositories/waiting"
                   onClick={closeMobileSidebar}
                   className={({ isActive }) => twMerge(
                     clsx(
@@ -147,7 +147,7 @@ export function Sidebar() {
             {openPipelines && (
               <div className="mt-1 flex flex-col gap-0.5 pl-10 pr-2">
                 <NavLink
-                  to="/pipelines/migrated"
+                  to="/app/pipelines/migrated"
                   onClick={closeMobileSidebar}
                   className={({ isActive }) => twMerge(
                     clsx(
@@ -159,7 +159,7 @@ export function Sidebar() {
                   Migrated pipelines
                 </NavLink>
                 <NavLink
-                  to="/pipelines/waiting"
+                  to="/app/pipelines/waiting"
                   onClick={closeMobileSidebar}
                   className={({ isActive }) => twMerge(
                     clsx(
@@ -191,7 +191,7 @@ export function Sidebar() {
             {openHistory && (
               <div className="mt-1 flex flex-col gap-0.5 pl-10 pr-2">
                 <NavLink
-                  to="/history/all"
+                  to="/app/history/all"
                   onClick={closeMobileSidebar}
                   className={({ isActive }) => twMerge(
                     clsx(
@@ -203,7 +203,7 @@ export function Sidebar() {
                   All activities
                 </NavLink>
                 <NavLink
-                  to="/history/my"
+                  to="/app/history/my"
                   onClick={closeMobileSidebar}
                   className={({ isActive }) => twMerge(
                     clsx(
@@ -235,7 +235,7 @@ export function Sidebar() {
             {openCredentials && (
               <div className="mt-1 flex flex-col gap-0.5 pl-10 pr-2">
                 <NavLink
-                  to="/credentials/migrated"
+                  to="/app/credentials/migrated"
                   onClick={closeMobileSidebar}
                   className={({ isActive }) => twMerge(
                     clsx(
@@ -244,10 +244,10 @@ export function Sidebar() {
                     )
                   )}
                 >
-                  Migrated
+                  Migrated Creds
                 </NavLink>
                 <NavLink
-                  to="/credentials/waiting"
+                  to="/app/credentials/waiting"
                   onClick={closeMobileSidebar}
                   className={({ isActive }) => twMerge(
                     clsx(
@@ -256,7 +256,7 @@ export function Sidebar() {
                     )
                   )}
                 >
-                  Waiting
+                  Waiting Creds
                 </NavLink>
               </div>
             )}
@@ -265,7 +265,7 @@ export function Sidebar() {
 
           {user.permissions.includes('users') && (
           <NavLink
-            to="/users"
+            to="/app/users"
             onClick={closeMobileSidebar}
             className={({ isActive }) => twMerge(
               clsx(
@@ -284,7 +284,7 @@ export function Sidebar() {
           )}
 
           <NavLink
-            to="/settings"
+            to="/app/settings"
             onClick={closeMobileSidebar}
             className={({ isActive }) => twMerge(
               clsx(

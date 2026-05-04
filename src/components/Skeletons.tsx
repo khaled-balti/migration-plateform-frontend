@@ -14,7 +14,7 @@ export function TableSkeleton() {
           <div key={i} className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
         ))}
       </div>
-      <div className="divide-y divide-slate-100 dark:divide-slate-800/50">
+      <div className="divide-y divide-slate-100 dark:divide-slate-800/50 p-1">
         {[1, 2, 3, 4, 5].map(i => (
           <div key={i} className="p-4 px-6 flex items-center gap-8 animate-pulse bg-white dark:bg-[#1e1e2d]">
             <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-8"></div>
@@ -56,7 +56,7 @@ export function HistorySkeleton() {
 }
 export function RepositoryDetailSkeleton() {
   return (
-    <div className="space-y-8 animate-pulse">
+    <div className="space-y-8 animate-pulse p-6">
       <div className="flex justify-between items-start">
         <div className="space-y-3 w-1/3">
           <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded-lg w-full"></div>
@@ -76,7 +76,7 @@ export function RepositoryDetailSkeleton() {
 
 export function PipelineDetailSkeleton() {
   return (
-    <div className="max-w-5xl mx-auto space-y-8 animate-pulse">
+    <div className="max-w-5xl mx-auto space-y-8 animate-pulse p-6">
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-2xl"></div>
         <div className="space-y-2 flex-1">
@@ -110,7 +110,7 @@ export function PipelineApprovalSkeleton() {
 
 export function SettingsSkeleton() {
   return (
-    <div className="max-w-4xl mx-auto space-y-10 animate-pulse">
+    <div className="max-w-4xl mx-auto space-y-10 animate-pulse p-6">
       <div className="space-y-2">
         <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/4"></div>
         <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-1/2"></div>

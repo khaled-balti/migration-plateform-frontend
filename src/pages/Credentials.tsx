@@ -3,7 +3,7 @@ import { DataTable } from "../components/DataTable";
 import { TableSkeleton } from "../components/Skeletons";
 import type { Column } from "../components/DataTable";
 import {
-  Key, Send, RefreshCw, ArrowRightCircle, User, Globe,
+  Key, Send, RefreshCw, ArrowRightCircle, Globe,
   Eye, EyeOff, Lock, Terminal,
 } from "lucide-react";
 import { useAuth } from "../providers/AuthContext";
@@ -57,7 +57,7 @@ function SecretCell({ row, canSee }: { row: Credential; canSee: boolean }) {
 }
 
 // ─── Column Builders ─────────────────────────────────────────────────────────
-const getSharedColumns = (canSeeSecrets: boolean, onMigrateOne?: (id: string) => void): Column<Credential>[] => [
+const getSharedColumns = (canSeeSecrets: boolean): Column<Credential>[] => [
   {
     header: "Credential ID",
     accessorKey: "credential_id",
@@ -93,19 +93,6 @@ const getSharedColumns = (canSeeSecrets: boolean, onMigrateOne?: (id: string) =>
     ),
   },
   {
-    header: "Username",
-    accessorKey: "username",
-    cell: (row) =>
-      row.username ? (
-        <div className="flex items-center gap-1.5">
-          <User className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-slate-600 dark:text-slate-300 text-sm font-mono">{row.username}</span>
-        </div>
-      ) : (
-        <span className="text-slate-300 dark:text-slate-600 text-xs italic">N/A</span>
-      ),
-  },
-  {
     header: "Secret",
     accessorKey: "secret",
     cell: (row) => <SecretCell row={row} canSee={canSeeSecrets} />,
@@ -121,30 +108,10 @@ const getSharedColumns = (canSeeSecrets: boolean, onMigrateOne?: (id: string) =>
 
 const getMigratedColumns = (canSeeSecrets: boolean): Column<Credential>[] => [
   ...getSharedColumns(canSeeSecrets),
-  {
-    header: "Status",
-    accessorKey: "is_migrated",
-    cell: () => (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-        Migrated
-      </span>
-    ),
-  },
 ];
 
 const getWaitingColumns = (canSeeSecrets: boolean, onMigrateOne: (id: string) => void): Column<Credential>[] => [
   ...getSharedColumns(canSeeSecrets),
-  {
-    header: "Status",
-    accessorKey: "is_migrated",
-    cell: () => (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
-        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block" />
-        Pending
-      </span>
-    ),
-  },
   {
     header: "Actions",
     accessorKey: "id",
@@ -191,19 +158,16 @@ export function CredentialsPage({ type }: { type: "migrated" | "waiting" }) {
   };
 
   const syncCredentials = async () => {
-    const toastId = toast.loading("Syncing with Jenkins...");
     setIsLoading(true);
     try {
       const res = await fetch("/api/credentials/sync/", { method: "POST" });
       const json = await res.json();
       if (!res.ok) {
-        toast.error("Sync Error: " + (json.error || "Failed"), { id: toastId });
-      } else {
-        toast.success(`Synced — ${json.new_credentials} new, ${json.skipped_credentials} updated`, { id: toastId });
+        toast.error("Sync Error: " + (json.error || "Failed"));
       }
       await fetchCredentials();
     } catch (err: any) {
-      toast.error("Network Error: " + err.message, { id: toastId });
+      toast.error("Network Error: " + err.message);
       setIsLoading(false);
     }
   };
@@ -255,11 +219,7 @@ export function CredentialsPage({ type }: { type: "migrated" | "waiting" }) {
   };
 
   useEffect(() => {
-    if (type === "waiting") {
-      syncCredentials();
-    } else {
-      fetchCredentials();
-    }
+    syncCredentials();
   }, [type]);
 
   const columns =
@@ -298,7 +258,7 @@ export function CredentialsPage({ type }: { type: "migrated" | "waiting" }) {
               Migrate All ({selectedIds.length})
             </button>
           )}
-          {type === "waiting" && canSeeSecrets && (
+          {canSeeSecrets && (
             <button
               onClick={syncCredentials}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 dark:text-slate-300 rounded-lg font-medium shadow-sm transition-colors active:scale-95 whitespace-nowrap"
@@ -311,7 +271,7 @@ export function CredentialsPage({ type }: { type: "migrated" | "waiting" }) {
       </div>
 
       {/* Table */}
-      {isLoading ? (
+      {isLoading && data.length === 0 ? (
         <TableSkeleton />
       ) : (
         <DataTable
@@ -320,6 +280,7 @@ export function CredentialsPage({ type }: { type: "migrated" | "waiting" }) {
           enableSelection={type === "waiting"}
           selectedIds={selectedIds}
           onSelectionChange={setSelectedIds}
+          isLoading={isLoading}
         />
       )}
 

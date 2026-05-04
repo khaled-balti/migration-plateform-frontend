@@ -97,7 +97,7 @@ export function PipelinesPage({ type }: { type: "migrated" | "waiting" }) {
             toast.success("Dry-run complete! Ready for review.");
             // We auto-navigate after a delay
             setTimeout(() => {
-               navigate(`/pipelines/approve/${pipeline.id}`, { 
+               navigate(`/app/pipelines/approve/${pipeline.id}`, { 
                  state: { yaml: fullResult.yaml, pipelineName: pipeline.name } 
                });
             }, 4000);
@@ -196,15 +196,10 @@ export function PipelinesPage({ type }: { type: "migrated" | "waiting" }) {
   const columns: Column<Pipeline>[] = type === "migrated" ? [
     ...getSharedColumns(),
     { header: "Migration Date", accessorKey: "migration_date", cell: (row) => <span className="text-slate-600 text-sm font-medium">{row.migration_date}</span> },
-    { header: "Migrated By", accessorKey: "user", cell: (row) => (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700">
-        {row.user}
-      </span>
-    )},
     { header: "Actions", accessorKey: "id", cell: (row) => (
       <div className="flex items-center gap-2">
         <Link 
-          to={`/pipelines/details/${row.id}`}
+          to={`/app/pipelines/details/${row.id}`}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 hover:text-slate-900 transition-colors border border-slate-200 shadow-sm"
         >
           <Eye className="w-4 h-4" />
@@ -217,7 +212,7 @@ export function PipelinesPage({ type }: { type: "migrated" | "waiting" }) {
     { header: "Actions", accessorKey: "id", cell: (row) => (
       <div className="flex items-center gap-3">
         <Link 
-          to={`/pipelines/details/${row.id}`}
+          to={`/app/pipelines/details/${row.id}`}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 bg-white hover:bg-slate-100 hover:text-slate-900 transition-colors border border-slate-200 shadow-sm"
         >
           <Eye className="w-4 h-4" />
@@ -290,11 +285,7 @@ export function PipelinesPage({ type }: { type: "migrated" | "waiting" }) {
   };
 
   useEffect(() => {
-    if (type === "waiting") {
-      syncPipelines();
-    } else {
-      fetchPipelines();
-    }
+    syncPipelines();
   }, [type]);
   
   return (
@@ -320,7 +311,7 @@ export function PipelinesPage({ type }: { type: "migrated" | "waiting" }) {
               Migrate All ({selectedIds.length})
             </button>
           )}
-          {type === "waiting" && hasPipelinePermission && (
+          {hasPipelinePermission && (
             <button 
               onClick={syncPipelines}
               className="flex items-center gap-2 px-5 py-2.5 font-medium rounded-xl text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm transition-all active:scale-95 group whitespace-nowrap"
@@ -332,7 +323,7 @@ export function PipelinesPage({ type }: { type: "migrated" | "waiting" }) {
         </div>
       </div>
       
-      {isLoading ? (
+      {isLoading && data.length === 0 ? (
         <TableSkeleton />
       ) : (
         <DataTable 
@@ -341,6 +332,7 @@ export function PipelinesPage({ type }: { type: "migrated" | "waiting" }) {
           enableSelection={type === "waiting"} 
           selectedIds={selectedIds}
           onSelectionChange={setSelectedIds}
+          isLoading={isLoading}
         />
       )}
 
@@ -376,7 +368,7 @@ export function PipelinesPage({ type }: { type: "migrated" | "waiting" }) {
                <div className="px-6 py-4 border-t border-slate-800 bg-[#161B22] flex justify-end gap-3">
                  {migratedResult && currentPipeline ? (
                    <button 
-                     onClick={() => navigate(`/pipelines/approve/${currentPipeline.id}`, { 
+                     onClick={() => navigate(`/app/pipelines/approve/${currentPipeline.id}`, { 
                        state: { yaml: migratedResult.yaml, pipelineName: currentPipeline.name } 
                      })}
                      className="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 rounded-lg text-white font-semibold transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2"
