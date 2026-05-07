@@ -18,6 +18,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 import { ChatbotPopup } from './ChatbotPopup';
+import { Terminal } from './Terminal';
 
 export function Sidebar() {
   const [openRepos, setOpenRepos] = useState(true);
@@ -319,6 +320,7 @@ export function Sidebar() {
       </main>
 
       <ChatbotPopup />
+      <Terminal />
     </div>
   );
 }
