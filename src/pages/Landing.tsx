@@ -1,10 +1,106 @@
 import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   GitBranch, Shield, Zap, ArrowRight, ChevronRight,
-  Cpu, Globe, Lock, BarChart3, Terminal, Layers
+  Cpu, Globe, Lock, BarChart3, Terminal, Layers,
+  HelpCircle, X, Info, AlertTriangle
 } from "lucide-react";
 import { useAuth } from "../providers/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
+
+/* ─── Token Info Modal ────────────────────────────────────────────────── */
+function TokenInfoModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-white/10 bg-[#0d0d1a] shadow-2xl"
+          >
+            <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.02] px-6 py-4">
+              <div className="flex items-center gap-2">
+                <HelpCircle className="h-5 w-5 text-indigo-400" />
+                <h2 className="text-lg font-bold text-white">Migration Instructions</h2>
+              </div>
+              <button
+                onClick={onClose}
+                className="rounded-full p-1.5 text-slate-400 hover:bg-white/5 hover:text-white transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="max-h-[70vh] overflow-y-auto p-6 space-y-6">
+              {/* Token Roles */}
+              <section className="space-y-3">
+                <div className="flex items-center gap-2 text-indigo-400 font-semibold text-sm">
+                  <Info className="h-4 w-4" />
+                  <h4>Required Token Roles & Scopes</h4>
+                </div>
+                <div className="space-y-4 text-xs text-slate-400 leading-relaxed">
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/5">
+                    <p className="text-white font-medium mb-1">GitHub Personal Access Token (classic)</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li><code className="text-indigo-300">repo</code> (Full control of private repositories)</li>
+                      <li><code className="text-indigo-300">workflow</code> (Update GitHub Action workflows)</li>
+                      <li><code className="text-indigo-300">admin:org</code> (If migrating to an organization)</li>
+                    </ul>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/5">
+                    <p className="text-white font-medium mb-1">GitLab Access Token</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li><code className="text-indigo-300">api</code> (Complete read/write access)</li>
+                      <li><code className="text-indigo-300">read_repository</code> & <code className="text-indigo-300">write_repository</code></li>
+                    </ul>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/5">
+                    <p className="text-white font-medium mb-1">Jenkins API Token</p>
+                    <p>Requires an API Token generated in your user profile with read and job execution permissions.</p>
+                  </div>
+                </div>
+              </section>
+
+              {/* Warnings */}
+              <section className="space-y-3">
+                <div className="flex items-center gap-2 text-amber-400 font-semibold text-sm">
+                  <AlertTriangle className="h-4 w-4" />
+                  <h4>Important Warnings</h4>
+                </div>
+                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200/80 leading-relaxed">
+                  <p className="font-bold text-amber-400 mb-1">Expiration Date Verification</p>
+                  <p>
+                    Always check the expiration date of your tokens. Expired tokens will cause migration 
+                    failures and credential synchronization errors. We recommend using tokens with 
+                    at least 30 days of validity remaining.
+                  </p>
+                </div>
+              </section>
+            </div>
+
+            <div className="border-t border-white/5 bg-white/[0.02] px-6 py-4 flex justify-end">
+              <button
+                onClick={onClose}
+                className="px-5 py-2 text-sm font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-lg shadow-indigo-500/20"
+              >
+                Got it
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 /* ─── Tiny canvas particle system ───────────────────────────────────── */
 function ParticleCanvas() {
@@ -116,9 +212,11 @@ function BadgePill({ text }: { text: string }) {
 /* ─── Main component ─────────────────────────────────────────────────── */
 export function LandingPage() {
   const { user } = useAuth();
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#060610] text-white overflow-x-hidden font-sans">
+      <TokenInfoModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
       {/* ── Keyframe styles ── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -143,9 +241,16 @@ export function LandingPage() {
           <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
             <GitBranch className="w-4 h-4 text-white" />
           </div>
-          <span className="font-bold text-white tracking-tight">MigratePro</span>
+          <span className="font-bold text-white tracking-tight text-lg">Move to GitHub</span>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsHelpOpen(true)}
+            className="p-2 text-slate-400 hover:text-white transition-colors flex items-center gap-1.5"
+            title="Migration Help"
+          >
+            <HelpCircle className="w-5 h-5" />
+          </button>
           {!user ? (
             <>
               <Link to="/login"
@@ -363,7 +468,7 @@ jobs:
 
       {/* ── Footer ── */}
       <footer className="border-t border-white/5 py-8 px-6 text-center text-xs text-slate-600">
-        © {new Date().getFullYear()} MigratePro. Built for DevOps teams who ship fast.
+        © {new Date().getFullYear()} Move to GitHub. Built for DevOps teams who ship fast.
       </footer>
     </div>
   );

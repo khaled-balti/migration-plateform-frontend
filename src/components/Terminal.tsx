@@ -116,7 +116,7 @@ export const Terminal: React.FC = () => {
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => setIsOpen(true)}
                                 className="w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 bg-[#1a1a2e] text-emerald-400 border border-zinc-700 hover:border-emerald-500 group relative overflow-hidden"
-                                title="Open Terminal CLI (Cmd+K)"
+                                title="Open mv2gh Terminal (Cmd+K)"
                             >
                                 <div className="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                                 <TerminalIcon size={24} className="group-hover:animate-pulse" />
@@ -143,9 +143,9 @@ export const Terminal: React.FC = () => {
                                     </div>
                                     <div className="h-4 w-px bg-slate-700 mx-1" />
                                     <div className="flex items-center gap-2 text-xs text-slate-300 font-mono">
-                                        <span className="opacity-70 font-bold">mv2cloud@cli</span>
+                                        <span className="opacity-70 font-bold">mv2gh@cli</span>
                                         <span className="opacity-30">|</span>
-                                        <span className="text-emerald-400 truncate max-w-[200px]">~/migration-platform</span>
+                                        <span className="text-emerald-400 truncate max-w-[200px]">~/move-to-github</span>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
@@ -164,11 +164,12 @@ export const Terminal: React.FC = () => {
                             {/* Output area */}
                             <div 
                                 ref={scrollRef}
-                                className="flex-1 p-5 font-mono text-xs md:text-sm overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 bg-[#0f172a]"
+                                className="flex-1 p-8 font-mono text-xs md:text-sm overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 bg-[#050508] relative group"
                             >
-                                <div className="flex flex-col gap-1 mb-4 opacity-80">
-                                    <div className="text-emerald-400 font-bold tracking-tight">MV2CLOUD CLI ENGINE v1.2.4 (stable)</div>
-                                    <div className="text-slate-500 text-[10px] font-bold">AUTH_MODE: JWT_BEERER | STATUS: CONNECTED</div>
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/[0.03] blur-[100px] pointer-events-none" />
+                                <div className="flex flex-col gap-1 mb-8 opacity-80">
+                                    <div className="text-emerald-400 font-black tracking-tight uppercase tracking-widest text-[10px]">Move to GitHub CLI v1.2.4 (stable)</div>
+                                    <div className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">Auth_Mode: JWT_Bearer | Status: Connected</div>
                                 </div>
                                 
                                 <div className="text-slate-400 mb-4 pb-2 border-b border-slate-800/50">
@@ -177,17 +178,17 @@ export const Terminal: React.FC = () => {
 
                                 {output.map((line, i) => (
                                     <div key={i} className={cn(
-                                        "mb-2 whitespace-pre-wrap break-all leading-relaxed animate-in fade-in slide-in-from-left-1 duration-300",
-                                        line.type === 'cmd' ? "text-sky-400 font-bold" : line.type === 'err' ? "text-red-400 bg-red-400/5 px-2 py-1 rounded" : "text-slate-100"
+                                        "mb-3 whitespace-pre-wrap break-all leading-relaxed animate-in fade-in slide-in-from-left-1 duration-300",
+                                        line.type === 'cmd' ? "text-sky-400 font-bold" : line.type === 'err' ? "text-rose-400 bg-rose-400/5 px-3 py-1.5 rounded-xl border border-rose-400/10" : "text-emerald-400/90 [text-shadow:0_0_20px_rgba(52,211,153,0.3)]"
                                     )}>
                                         {line.type === 'cmd' ? (
                                             <div className="flex gap-2">
-                                                <span className="text-emerald-400 font-bold">➜</span>
-                                                <span className="text-slate-500">admin@pfe: ~ </span>
-                                                <span className="text-white">{line.text}</span>
+                                                <span className="text-emerald-400 font-bold opacity-50">➜</span>
+                                                <span className="text-slate-500 text-[10px] uppercase font-black tracking-widest mt-0.5">admin@pfe: ~ </span>
+                                                <span className="text-white tracking-tight">{line.text}</span>
                                             </div>
                                         ) : (
-                                            <div className="pl-4 border-l border-slate-700/50">
+                                            <div className="pl-4 border-l border-white/5">
                                                 {line.text}
                                             </div>
                                         )}
@@ -205,7 +206,7 @@ export const Terminal: React.FC = () => {
                             {/* Input line */}
                             <form onSubmit={handleCommand} className="flex items-center gap-3 p-5 bg-[#0f172a] border-t border-slate-700 focus-within:border-emerald-400/50 transition-colors">
                                 <span className="text-emerald-400 font-bold font-mono">➜</span>
-                                <span className="text-slate-500 font-mono text-sm hidden md:inline font-semibold">admin@mv2cloud: ~</span>
+                                <span className="text-slate-500 font-mono text-sm hidden md:inline font-semibold">admin@mv2gh: ~</span>
                                 <input
                                     ref={inputRef}
                                     type="text"
@@ -214,7 +215,7 @@ export const Terminal: React.FC = () => {
                                     onKeyDown={handleKeyDown}
                                     disabled={isExecuting}
                                     className="flex-1 bg-transparent border-none outline-none text-white font-mono text-sm placeholder:text-slate-600"
-                                    placeholder="mv2cloud migrate repo <name> ..."
+                                    placeholder="mv2gh migrate repo <name> ..."
                                     autoFocus
                                 />
                                 {isExecuting ? (

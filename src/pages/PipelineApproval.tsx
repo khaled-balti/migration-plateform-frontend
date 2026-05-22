@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, CheckCircle, AlertCircle, Loader2, Terminal } from "lucide-react";
 import toast from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface LocationState {
   yaml: string;
@@ -21,8 +22,8 @@ export function PipelineApprovalPage() {
   const [isApproving, setIsApproving] = useState(false);
   const [isFetching, setIsFetching] = useState(!state?.yaml);
 
-  const [isLogModalOpen, setIsLogModalOpen] = useState(false);
   const [migrationLogs, setMigrationLogs] = useState("");
+  const [isLogModalOpen, setIsLogModalOpen] = useState(false);
   const [migratedResult, setMigratedResult] = useState<any>(null);
 
   useEffect(() => {
@@ -238,46 +239,59 @@ export function PipelineApprovalPage() {
       </div>
 
       {/* Migration Log Modal */}
-      {isLogModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-[#0D1117] border border-slate-700 w-full max-w-3xl rounded-xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-8">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#161B22]">
-              <div className="flex items-center gap-3 text-emerald-400 font-semibold">
-                <Terminal className="w-5 h-5" />
-                <span>Migration Execution Logs</span>
-              </div>
-              {!isApproving && (
-                <button 
-                  onClick={() => setIsLogModalOpen(false)}
-                  className="text-slate-400 hover:text-white transition-colors text-xl font-bold p-1 rounded-md hover:bg-slate-800"
-                >
-                  &times;
-                </button>
-              )}
-            </div>
-            
-            <div className="p-6 overflow-y-auto flex-1 font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-300 custom-scrollbar">
-              {migrationLogs}
-              {isApproving && (
-                <div className="flex gap-1 mt-4 items-center text-slate-500">
-                  <span className="animate-pulse w-2 h-4 bg-emerald-500/80 inline-block"></span>
+      <AnimatePresence>
+        {isLogModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 backdrop-blur-md bg-slate-950/40 transition-all duration-300">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-[#050508] border border-white/10 w-full max-w-4xl rounded-[2rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] flex flex-col max-h-[85vh] overflow-hidden"
+            >
+              <div className="flex items-center justify-between px-8 py-6 border-b border-white/5 bg-[#080812]/50">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                    <Terminal className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-black text-lg tracking-tight uppercase tracking-[0.1em]">Migration Terminal</h3>
+                    <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Deployment Sequence Telemetry</p>
+                  </div>
                 </div>
+                {!isApproving && (
+                  <button 
+                    onClick={() => setIsLogModalOpen(false)}
+                    className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all active:scale-90"
+                  >
+                    &times;
+                  </button>
+                )}
+              </div>
+              
+              <div className="p-8 overflow-y-auto flex-1 font-mono text-sm leading-relaxed whitespace-pre-wrap text-emerald-400/90 [text-shadow:0_0_20px_rgba(52,211,153,0.3)] custom-scrollbar">
+                {migrationLogs}
+                {isApproving && (
+                  <div className="flex gap-2 mt-4 items-center">
+                    <span className="animate-pulse w-2 h-5 bg-emerald-500/80 inline-block shadow-[0_0_10px_rgba(52,211,153,0.5)]"></span>
+                    <span className="text-emerald-500/40 text-xs font-black uppercase tracking-widest animate-pulse">Pushing to GitHub...</span>
+                  </div>
+                )}
+              </div>
+              
+              {!isApproving && (
+                 <div className="px-8 py-6 border-t border-white/5 bg-[#080812]/50 flex justify-end">
+                   <button 
+                     onClick={() => setIsLogModalOpen(false)}
+                     className="px-8 py-3 bg-white text-black font-black rounded-2xl hover:bg-slate-200 transition-all active:scale-95 uppercase text-xs tracking-widest shadow-xl shadow-white/5"
+                   >
+                     Close Console
+                   </button>
+                 </div>
               )}
-            </div>
-            
-            {!isApproving && (
-               <div className="px-6 py-4 border-t border-slate-800 bg-[#161B22] flex justify-end">
-                 <button 
-                   onClick={() => setIsLogModalOpen(false)}
-                   className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg text-white font-medium transition-colors"
-                 >
-                   Close Console
-                 </button>
-               </div>
-            )}
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }

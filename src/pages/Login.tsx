@@ -1,190 +1,157 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Lock, ArrowRight, CodeSquare, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Mail, Lock, Eye, EyeOff, ArrowRight, CodeSquare } from "lucide-react";
 import { useAuth } from "../providers/AuthContext";
+import toast from "react-hot-toast";
 
 export function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{email?: string; password?: string; general?: string}>({});
+  const [showPw, setShowPw] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newErrors: {email?: string; password?: string} = {};
-    
-    if (!email) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-    
-    if (!password) {
-      newErrors.password = "Password is required";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setErrors({});
     setIsLoading(true);
-
     try {
-      const res = await fetch('/api/users/login/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+      const res = await fetch("/api/users/login/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
-      
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Authentication failed");
       
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to login');
-      }
-      
+      toast.success("Login successful! Redirecting...");
       login(data.token);
       navigate("/app");
     } catch (err: any) {
-      setErrors({ general: err.message });
+      toast.error(err.message);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const labelCls = "text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] ml-1 mb-1 block";
+
   return (
-    <div className="min-h-screen w-full flex bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-slate-100 transition-colors duration-300">
-      {/* Left Side - Brand & Graphics */}
-      <div className="hidden lg:flex flex-col w-1/2 p-12 relative overflow-hidden bg-[#1e1e2d] text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1e1e2d] via-indigo-900/40 to-[#1e1e2d] z-0" />
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-t from-indigo-600/20 to-transparent" />
+    <div className="min-h-screen w-full flex bg-white dark:bg-[#050508] text-slate-900 dark:text-white font-['Inter',sans-serif]">
+      {/* Visual Side */}
+      <div className="hidden lg:flex flex-col w-[45%] p-16 relative overflow-hidden bg-indigo-600 dark:bg-[#080812] border-r border-indigo-500/20 dark:border-white/5 text-white transition-colors duration-500">
+        {/* Motif: Grid Pattern */}
+        <div className="absolute inset-0 z-0 opacity-[0.1]" 
+          style={{ backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`, backgroundSize: '40px 40px' }} 
+        />
         
-        <div className="relative z-10 flex items-center gap-3 font-semibold text-2xl tracking-tight mb-auto">
-          <div className="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+        {/* Shadow Animations / Drifting Blobs */}
+        <motion.div 
+          animate={{ 
+            x: [0, 50, -30, 0], 
+            y: [0, -40, 60, 0],
+            scale: [1, 1.2, 0.9, 1] 
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[-10%] left-[-10%] w-[80%] h-[80%] rounded-full bg-white/10 dark:bg-indigo-500/10 blur-[120px] pointer-events-none" 
+        />
+        <motion.div 
+          animate={{ 
+            x: [0, -60, 40, 0], 
+            y: [0, 50, -40, 0],
+            scale: [1.1, 0.9, 1.2, 1.1] 
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] rounded-full bg-indigo-400/10 dark:bg-purple-500/5 blur-[100px] pointer-events-none" 
+        />
+        
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-white/10 dark:border-white/[0.03] animate-[spin_60s_linear_infinite] pointer-events-none" />
+        
+        <Link to="/" className="relative z-10 flex items-center gap-3 font-black text-2xl tracking-tighter uppercase italic">
+          <div className="w-10 h-10 bg-white/10 dark:bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg border border-white/20">
             <CodeSquare className="w-6 h-6 text-white" />
           </div>
-          Migration Platform
-        </div>
+          Move to GitHub
+        </Link>
 
-        <div className="relative z-10 max-w-md">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-4xl font-bold mb-6 leading-tight"
-          >
-            Seamlessly migrate your repositories and pipelines.
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-indigo-200/80 text-lg mb-12"
-          >
-            Manage active credentials, trigger workflows, and review comprehensive migration histories in one secure dashboard.
-          </motion.p>
+        <div className="relative z-10 mt-auto">
+          <h1 className="text-4xl font-black mb-6 leading-tight tracking-tight">
+            Elevate your <span className="text-indigo-200 dark:text-indigo-400">migration velocity</span>.
+          </h1>
+          <p className="text-indigo-100 dark:text-slate-400 text-lg font-medium leading-relaxed">
+            Access the command center for enterprise GitLab to GitHub transitions with zero downtime.
+          </p>
         </div>
       </div>
 
-      {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-12 bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
-        <div className="w-full max-w-sm">
-          <div className="text-center lg:text-left mb-10">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">Welcome back</h2>
-            <p className="text-slate-500 dark:text-slate-400">Sign in to your account to continue</p>
-          </div>
+      {/* Form Side */}
+      <div className="w-full lg:w-[55%] flex items-center justify-center p-8 lg:p-24 relative bg-slate-50/50 dark:bg-[#050508] transition-colors duration-500">
+        <div className="w-full max-w-md relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <div className="mb-12 text-center lg:text-left">
+              <h2 className="text-4xl font-black text-slate-900 dark:text-white mb-3 tracking-tight">Welcome Back</h2>
+              <p className="text-slate-500 font-medium tracking-tight">Sign in with your organizational identity</p>
+            </div>
 
-          <form className="space-y-5" onSubmit={handleLogin} noValidate>
-            <AnimatePresence>
-              {errors.general && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} className="p-3 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl text-sm font-medium flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4" />
-                    {errors.general}
+            <form className="space-y-6" onSubmit={handleLogin}>
+              <div className="space-y-2">
+                <label className={labelCls}>Work Email</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 text-slate-400 dark:text-slate-500">
+                    <Mail size={20} />
                   </div>
-                  {errors.general.includes("verify your email") && (
-                    <button 
-                      type="button"
-                      onClick={() => navigate("/register", { state: { step: "verification", email } })}
-                      className="text-xs text-indigo-600 hover:underline text-left font-semibold"
-                    >
-                      Verify your account now →
-                    </button>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300 ml-1">Email Address</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <Mail className={`h-5 w-5 ${errors.email ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'}`} />
+                  <input 
+                    type="email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    placeholder="alex@company.com" 
+                    className="w-full pl-12 pr-4 py-4 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 dark:focus:border-indigo-500/50 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-700 font-medium text-slate-800 dark:text-white shadow-sm dark:shadow-none"
+                  />
                 </div>
-                <input 
-                  type="email" 
-                  value={email}
-                  onChange={(e) => {setEmail(e.target.value); if(errors.email) setErrors({...errors, email: undefined})}}
-                  placeholder="name@company.com" 
-                  className={`w-full pl-11 pr-4 py-2.5 bg-white dark:bg-[#121212] border rounded-lg focus:ring-2 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 shadow-sm text-sm
-                    ${errors.email ? 'border-rose-400 focus:ring-rose-400/20 focus:border-rose-400 dark:border-rose-500/50' : 'border-slate-200 dark:border-slate-800 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-500'}`}
-                />
               </div>
-              <AnimatePresence>
-                {errors.email && (
-                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="flex items-center gap-1.5 text-rose-500 text-xs ml-1 font-medium overflow-hidden">
-                    <AlertCircle className="w-3.5 h-3.5" />
-                    {errors.email}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
 
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between ml-1">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
-                <Link to="/forgot-password" className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">Forgot password?</Link>
-              </div>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                  <Lock className={`h-5 w-5 ${errors.password ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'}`} />
+              <div className="space-y-2">
+                <div className="flex justify-between items-center px-1">
+                  <label className={labelCls}>Vault Key</label>
+                  <Link to="/forgot-password" className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 uppercase tracking-widest transition-colors mb-1">Recover Key?</Link>
                 </div>
-                <input 
-                  type="password" 
-                  value={password}
-                  onChange={(e) => {setPassword(e.target.value); if(errors.password) setErrors({...errors, password: undefined})}}
-                  placeholder="••••••••" 
-                  className={`w-full pl-11 pr-4 py-2.5 bg-white dark:bg-[#121212] border rounded-lg focus:ring-2 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600 shadow-sm text-sm
-                    ${errors.password ? 'border-rose-400 focus:ring-rose-400/20 focus:border-rose-400 dark:border-rose-500/50' : 'border-slate-200 dark:border-slate-800 focus:ring-indigo-500/20 focus:border-indigo-500 dark:focus:border-indigo-500'}`}
-                />
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-indigo-600 dark:group-focus-within:text-indigo-400 text-slate-400 dark:text-slate-500">
+                    <Lock size={20} />
+                  </div>
+                  <input 
+                    type={showPw ? "text" : "password"} 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    placeholder="••••••••" 
+                    className="w-full pl-12 pr-12 py-4 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 dark:focus:border-indigo-500/50 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-700 font-medium text-slate-800 dark:text-white shadow-sm dark:shadow-none"
+                  />
+                  <button type="button" onClick={() => setShowPw(!showPw)} className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-indigo-600 dark:text-slate-600 dark:hover:text-slate-400">
+                    {showPw ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
               </div>
-              <AnimatePresence>
-                {errors.password && (
-                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="flex items-center gap-1.5 text-rose-500 text-xs ml-1 font-medium overflow-hidden">
-                    <AlertCircle className="w-3.5 h-3.5" />
-                    {errors.password}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
 
-            <div className="pt-4">
-              <button disabled={isLoading} type="submit" className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm transition-colors active:scale-[0.98] disabled:opacity-70 text-sm">
-                {isLoading ? 'Signing in...' : 'Sign In'}
-                {!isLoading && <ArrowRight className="w-4 h-4" />}
-              </button>
-            </div>
-          </form>
-          
-          <p className="mt-10 text-center text-sm text-slate-500 dark:text-slate-400">
-            Don't have an account? <Link to="/register" className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">Register your company</Link>
-          </p>
+              <div className="pt-4">
+                <button 
+                  disabled={isLoading}
+                  type="submit" 
+                  className="w-full flex items-center justify-center gap-3 bg-indigo-600 dark:bg-white text-white dark:text-black font-black py-4 px-6 rounded-2xl hover:bg-indigo-700 dark:hover:bg-slate-200 transition-all font-['Inter'] shadow-[0_20px_40px_-15px_rgba(79,70,229,0.3)] dark:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.1)] disabled:opacity-50"
+                >
+                  {isLoading ? "Authenticating..." : "Establish Session"}
+                  <ArrowRight size={20} />
+                </button>
+              </div>
+
+              <div className="text-center mt-10">
+                <span className="text-sm font-medium text-slate-500 dark:text-slate-600">New organization?</span>
+                <Link to="/register" className="ml-2 text-sm font-black text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors uppercase tracking-widest border-b-2 border-indigo-500/10 hover:border-indigo-500">Register</Link>
+              </div>
+            </form>
+          </motion.div>
         </div>
       </div>
     </div>

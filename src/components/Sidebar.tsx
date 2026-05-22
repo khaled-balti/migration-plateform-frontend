@@ -49,7 +49,7 @@ export function Sidebar() {
     <div className="flex h-screen w-full overflow-hidden bg-[#fafafa] dark:bg-[#000] transition-colors duration-300 relative">
       {/* Mobile Top Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-[#0a0a0a] border-b border-slate-200 dark:border-[#333] px-4 flex items-center justify-between z-40">
-        <h1 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Migration Platform</h1>
+        <h1 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Move to GitHub</h1>
         <button 
           onClick={toggleMobileSidebar}
           className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1a1a1a] transition-colors"
@@ -72,14 +72,14 @@ export function Sidebar() {
       </AnimatePresence>
 
       <aside className={twMerge(
-        "fixed inset-y-0 left-0 lg:static w-[260px] bg-[#1e1e2d] dark:bg-[#0a0a0a] border-r border-[#1e1e2d] dark:border-[#333] h-screen flex flex-col text-slate-100 shrink-0 py-6 z-50 transition-all duration-300 transform",
+        "fixed inset-y-0 left-0 lg:static w-[260px] bg-[#604CF6] dark:bg-[#0a0a0a] border-r border-[#604CF6] dark:border-[#333] h-screen flex flex-col text-white shrink-0 py-6 z-50 transition-all duration-300 transform",
         isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}>
         <div className="px-6 mb-8 mt-2 flex items-center justify-between">
-          <h1 className="text-xl font-bold tracking-tight text-white">Migration Platform</h1>
+          <h1 className="text-xl font-bold tracking-tight text-white">Move to GitHub</h1>
           <button 
             onClick={closeMobileSidebar}
-            className="lg:hidden p-1 rounded-md hover:bg-[#2a2a3e] transition-colors"
+            className="lg:hidden p-1 rounded-md hover:bg-white/10 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -91,13 +91,13 @@ export function Sidebar() {
           <div>
             <button 
               onClick={() => setOpenRepos(!openRepos)}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[#9494b8] dark:text-slate-400 hover:bg-[#2a2a3e] dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200 transition-colors group text-sm"
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 dark:text-slate-400 hover:bg-white/10 dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200 transition-colors group text-sm"
             >
               <div className="flex items-center gap-3">
-                <Database className="w-4 h-4 text-[#73739c] dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300 transition-colors" />
+                <Database className="w-4 h-4 text-white/50 dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300 transition-colors" />
                 <span className="font-medium">Repositories</span>
               </div>
-              {openRepos ? <ChevronDown className="w-4 h-4 text-[#73739c] dark:text-slate-500" /> : <ChevronRight className="w-4 h-4 text-[#73739c] dark:text-slate-500" />}
+              {openRepos ? <ChevronDown className="w-4 h-4 text-white/50 dark:text-slate-500" /> : <ChevronRight className="w-4 h-4 text-white/50 dark:text-slate-500" />}
             </button>
             
             {openRepos && (
@@ -108,7 +108,7 @@ export function Sidebar() {
                   className={({ isActive }) => twMerge(
                     clsx(
                       "px-3 py-2 rounded-lg text-sm font-medium transition-colors block",
-                      isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white" : "text-[#9494b8] hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[#2a2a3e] dark:hover:bg-[#111]"
+                      isActive ? "bg-white/20 dark:bg-[#222] text-white" : "text-white/70 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white/10 dark:hover:bg-[#111]"
                     )
                   )}
                 >
@@ -120,7 +120,7 @@ export function Sidebar() {
                   className={({ isActive }) => twMerge(
                     clsx(
                       "px-3 py-2 rounded-lg text-sm font-medium transition-colors block",
-                      isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white" : "text-[#9494b8] hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[#2a2a3e] dark:hover:bg-[#111]"
+                      isActive ? "bg-white/20 dark:bg-[#222] text-white" : "text-white/70 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white/10 dark:hover:bg-[#111]"
                     )
                   )}
                 >
@@ -136,13 +136,13 @@ export function Sidebar() {
           <div>
             <button 
               onClick={() => setOpenPipelines(!openPipelines)}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[#9494b8] dark:text-slate-400 hover:bg-[#2a2a3e] dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200 transition-colors group text-sm"
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 dark:text-slate-400 hover:bg-white/10 dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200 transition-colors group text-sm"
             >
               <div className="flex items-center gap-3">
-                <GitMerge className="w-4 h-4 text-[#73739c] dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300 transition-colors" />
+                <GitMerge className="w-4 h-4 text-white/50 dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300 transition-colors" />
                 <span className="font-medium">Pipelines</span>
               </div>
-              {openPipelines ? <ChevronDown className="w-4 h-4 text-[#73739c] dark:text-slate-500" /> : <ChevronRight className="w-4 h-4 text-[#73739c] dark:text-slate-500" />}
+              {openPipelines ? <ChevronDown className="w-4 h-4 text-white/50 dark:text-slate-500" /> : <ChevronRight className="w-4 h-4 text-white/50 dark:text-slate-500" />}
             </button>
             
             {openPipelines && (
@@ -153,7 +153,7 @@ export function Sidebar() {
                   className={({ isActive }) => twMerge(
                     clsx(
                       "px-3 py-2 rounded-lg text-sm font-medium transition-colors block",
-                      isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white" : "text-[#9494b8] hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[#2a2a3e] dark:hover:bg-[#111]"
+                      isActive ? "bg-white/20 dark:bg-[#222] text-white" : "text-white/70 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white/10 dark:hover:bg-[#111]"
                     )
                   )}
                 >
@@ -165,7 +165,7 @@ export function Sidebar() {
                   className={({ isActive }) => twMerge(
                     clsx(
                       "px-3 py-2 rounded-lg text-sm font-medium transition-colors block",
-                      isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white" : "text-[#9494b8] hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[#2a2a3e] dark:hover:bg-[#111]"
+                      isActive ? "bg-white/20 dark:bg-[#222] text-white" : "text-white/70 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white/10 dark:hover:bg-[#111]"
                     )
                   )}
                 >
@@ -180,13 +180,13 @@ export function Sidebar() {
           <div>
             <button 
               onClick={() => setOpenHistory(!openHistory)}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[#9494b8] dark:text-slate-400 hover:bg-[#2a2a3e] dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200 transition-colors group text-sm"
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 dark:text-slate-400 hover:bg-white/10 dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200 transition-colors group text-sm"
             >
               <div className="flex items-center gap-3">
-                <History className="w-4 h-4 text-[#73739c] dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300 transition-colors" />
+                <History className="w-4 h-4 text-white/50 dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300 transition-colors" />
                 <span className="font-medium">History</span>
               </div>
-              {openHistory ? <ChevronDown className="w-4 h-4 text-[#73739c] dark:text-slate-500" /> : <ChevronRight className="w-4 h-4 text-[#73739c] dark:text-slate-500" />}
+              {openHistory ? <ChevronDown className="w-4 h-4 text-white/50 dark:text-slate-500" /> : <ChevronRight className="w-4 h-4 text-white/50 dark:text-slate-500" />}
             </button>
             
             {openHistory && (
@@ -197,7 +197,7 @@ export function Sidebar() {
                   className={({ isActive }) => twMerge(
                     clsx(
                       "px-3 py-2 rounded-lg text-sm font-medium transition-colors block",
-                      isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white" : "text-[#9494b8] hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[#2a2a3e] dark:hover:bg-[#111]"
+                      isActive ? "bg-white/20 dark:bg-[#222] text-white" : "text-white/70 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white/10 dark:hover:bg-[#111]"
                     )
                   )}
                 >
@@ -209,7 +209,7 @@ export function Sidebar() {
                   className={({ isActive }) => twMerge(
                     clsx(
                       "px-3 py-2 rounded-lg text-sm font-medium transition-colors block",
-                      isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white" : "text-[#9494b8] hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[#2a2a3e] dark:hover:bg-[#111]"
+                      isActive ? "bg-white/20 dark:bg-[#222] text-white" : "text-white/70 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white/10 dark:hover:bg-[#111]"
                     )
                   )}
                 >
@@ -224,13 +224,13 @@ export function Sidebar() {
           <div>
             <button 
               onClick={() => setOpenCredentials(!openCredentials)}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[#9494b8] dark:text-slate-400 hover:bg-[#2a2a3e] dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200 transition-colors group text-sm"
+              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-white/70 dark:text-slate-400 hover:bg-white/10 dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200 transition-colors group text-sm"
             >
               <div className="flex items-center gap-3">
-                <Key className="w-4 h-4 text-[#73739c] dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300 transition-colors" />
+                <Key className="w-4 h-4 text-white/50 dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300 transition-colors" />
                 <span className="font-medium">Credentials</span>
               </div>
-              {openCredentials ? <ChevronDown className="w-4 h-4 text-[#73739c] dark:text-slate-500" /> : <ChevronRight className="w-4 h-4 text-[#73739c] dark:text-slate-500" />}
+              {openCredentials ? <ChevronDown className="w-4 h-4 text-white/50 dark:text-slate-500" /> : <ChevronRight className="w-4 h-4 text-white/50 dark:text-slate-500" />}
             </button>
             
             {openCredentials && (
@@ -241,7 +241,7 @@ export function Sidebar() {
                   className={({ isActive }) => twMerge(
                     clsx(
                       "px-3 py-2 rounded-lg text-sm font-medium transition-colors block",
-                      isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white" : "text-[#9494b8] hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[#2a2a3e] dark:hover:bg-[#111]"
+                      isActive ? "bg-white/20 dark:bg-[#222] text-white" : "text-white/70 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white/10 dark:hover:bg-[#111]"
                     )
                   )}
                 >
@@ -253,7 +253,7 @@ export function Sidebar() {
                   className={({ isActive }) => twMerge(
                     clsx(
                       "px-3 py-2 rounded-lg text-sm font-medium transition-colors block",
-                      isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white" : "text-[#9494b8] hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[#2a2a3e] dark:hover:bg-[#111]"
+                      isActive ? "bg-white/20 dark:bg-[#222] text-white" : "text-white/70 hover:text-white dark:text-slate-400 dark:hover:text-slate-200 hover:bg-white/10 dark:hover:bg-[#111]"
                     )
                   )}
                 >
@@ -271,13 +271,13 @@ export function Sidebar() {
             className={({ isActive }) => twMerge(
               clsx(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group text-sm",
-                isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white font-medium" : "text-[#9494b8] dark:text-slate-400 hover:bg-[#2a2a3e] dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200"
+                isActive ? "bg-white/20 dark:bg-[#222] text-white font-medium" : "text-white/70 dark:text-slate-400 hover:bg-white/10 dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200"
               )
             )}
           >
             {({ isActive }) => (
               <>
-                <Users className={clsx("w-4 h-4 transition-colors", isActive ? "text-white" : "text-[#73739c] dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300")} />
+                <Users className={clsx("w-4 h-4 transition-colors", isActive ? "text-white" : "text-white/50 dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300")} />
                 <span className="font-medium">Users</span>
               </>
             )}
@@ -290,13 +290,13 @@ export function Sidebar() {
             className={({ isActive }) => twMerge(
               clsx(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group text-sm",
-                isActive ? "bg-[#2a2a3e] dark:bg-[#222] text-white font-medium" : "text-[#9494b8] dark:text-slate-400 hover:bg-[#2a2a3e] dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200"
+                isActive ? "bg-white/20 dark:bg-[#222] text-white font-medium" : "text-white/70 dark:text-slate-400 hover:bg-white/10 dark:hover:bg-[#111] hover:text-white dark:hover:text-slate-200"
               )
             )}
           >
             {({ isActive }) => (
               <>
-                <Settings className={clsx("w-4 h-4 transition-colors", isActive ? "text-white" : "text-[#73739c] dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300")} />
+                <Settings className={clsx("w-4 h-4 transition-colors", isActive ? "text-white" : "text-white/50 dark:text-slate-500 group-hover:text-white dark:group-hover:text-slate-300")} />
                 <span className="font-medium">Settings</span>
               </>
             )}
@@ -304,7 +304,7 @@ export function Sidebar() {
         </nav>
 
         {/* Bottom Actions */}
-        <div className="px-4 mt-auto flex flex-col gap-1 pt-4 border-t border-[#333]">
+        <div className="px-4 mt-auto flex flex-col gap-1 pt-4 border-t border-white/10 dark:border-[#333]">
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-rose-400 hover:bg-rose-500/20 transition-colors w-full text-left text-sm"

@@ -1,8 +1,9 @@
 import { useTheme } from "../providers/ThemeProvider";
-import { Sun, Moon, Laptop, Building2, Eye, EyeOff, Save, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { Sun, Moon, Laptop, Building2, Eye, EyeOff, Save, Loader2 } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import { SettingsSkeleton } from "../components/Skeletons";
 import { useAuth } from "../providers/AuthContext";
+import toast from "react-hot-toast";
 
 interface CompanyInfo {
   name: string;
@@ -70,14 +71,8 @@ export function SettingsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [form, setForm] = useState<CompanyInfo>(INITIAL_FORM);
   const [saving, setSaving] = useState(false);
-  const [toast, setToast] = useState<{ type: "success" | "error"; msg: string } | null>(null);
 
   const canManageCompany = user?.permissions?.includes("users");
-
-  const showToast = (type: "success" | "error", msg: string) => {
-    setToast({ type, msg });
-    setTimeout(() => setToast(null), 3500);
-  };
 
   const loadCompany = useCallback(async () => {
     try {
@@ -107,20 +102,21 @@ export function SettingsPage() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    const toastId = toast.loading("Saving company settings...");
     try {
       const res = await fetch("/api/company/update/", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      const data = await res.json();
       if (res.ok) {
-        showToast("success", "Company settings saved successfully.");
+        toast.success("Settings saved successfully!", { id: toastId });
       } else {
-        const data = await res.json();
-        showToast("error", data.error || "Failed to save settings.");
+        toast.error(data.error || "Failed to save settings.", { id: toastId });
       }
     } catch {
-      showToast("error", "Network error, please try again.");
+      toast.error("Network error, please try again.", { id: toastId });
     } finally {
       setSaving(false);
     }
@@ -130,20 +126,6 @@ export function SettingsPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full animate-in fade-in duration-500">
-      {/* Toast */}
-      {toast && (
-        <div className={`fixed top-5 right-5 z-50 flex items-center gap-2 px-4 py-3 rounded-2xl shadow-lg text-sm font-medium transition-all ${
-          toast.type === "success"
-            ? "bg-emerald-500 text-white"
-            : "bg-red-500 text-white"
-        }`}>
-          {toast.type === "success"
-            ? <CheckCircle className="w-4 h-4" />
-            : <XCircle className="w-4 h-4" />}
-          {toast.msg}
-        </div>
-      )}
-
       <div className="mb-10">
         <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 mb-2">
           Settings
