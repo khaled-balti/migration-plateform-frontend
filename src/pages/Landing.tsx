@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../providers/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
+import Logo from "../images/platform-logo.png"
 
 /* ─── Token Info Modal ────────────────────────────────────────────────── */
 function TokenInfoModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -239,7 +240,7 @@ export function LandingPage() {
                       px-6 md:px-12 py-4 border-b border-white/5 backdrop-blur-md bg-[#060610]/80">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-            <GitBranch className="w-4 h-4 text-white" />
+            <img src={Logo} alt="error" />
           </div>
           <span className="font-bold text-white tracking-tight text-lg">Move to GitHub</span>
         </div>

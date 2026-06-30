@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { DataTable } from "../components/DataTable";
 import { TableSkeleton } from "../components/Skeletons";
 import type { Column } from "../components/DataTable";
-import { PlayCircle, ExternalLink, Eye, ArrowRightCircle, Send, RefreshCw, Loader2, Terminal, Cpu, Activity } from "lucide-react";
+import { ExternalLink, Eye, ArrowRightCircle, Send, RefreshCw, Loader2, Terminal, Cpu, Activity } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "../providers/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";

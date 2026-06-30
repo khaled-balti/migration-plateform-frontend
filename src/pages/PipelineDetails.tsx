@@ -15,8 +15,6 @@ import {
   Zap,
   BarChart3,
   FileCode,
-  Box,
-  ChevronRight,
   RefreshCw
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";

@@ -24,7 +24,7 @@ export function PipelineApprovalPage() {
 
   const [migrationLogs, setMigrationLogs] = useState("");
   const [isLogModalOpen, setIsLogModalOpen] = useState(false);
-  const [migratedResult, setMigratedResult] = useState<any>(null);
+  // const [migratedResult, setMigratedResult] = useState<any>(null);
 
   useEffect(() => {
     if (!state?.yaml && id) {
@@ -138,7 +138,7 @@ export function PipelineApprovalPage() {
         try {
           const result = JSON.parse(resultBuffer);
           if (result?.success) {
-            setMigratedResult(result);
+            // setMigratedResult(result);
             toast.success("Pipeline migrated successfully!");
             setTimeout(() => {
               navigate("/app/pipelines/migrated");

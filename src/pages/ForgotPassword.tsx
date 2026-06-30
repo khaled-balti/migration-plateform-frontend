@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, ArrowRight, CodeSquare } from "lucide-react";
 import toast from "react-hot-toast";
+import Logo from "../images/platform-logo.png"
 
 export function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -58,10 +59,16 @@ export function ForgotPasswordPage() {
         
         <Link to="/" className="relative z-10 flex items-center gap-3 font-black text-2xl tracking-tighter uppercase italic">
           <div className="w-10 h-10 bg-white/10 dark:bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg border border-white/20">
-            <CodeSquare className="w-6 h-6 text-white" />
+            <img src={Logo} alt="error" />
           </div>
           Move to GitHub
         </Link>
+
+        <img
+          src={Logo}
+          alt="error"
+          className="mt-auto animate-glow-rotate"
+        />
 
         <div className="relative z-10 mt-auto">
           <h1 className="text-4xl font-black mb-6 leading-tight tracking-tight">

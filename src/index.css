@@ -66,3 +66,25 @@
     @apply bg-slate-200 rounded-full dark:bg-[#333] hover:bg-slate-300 dark:hover:bg-[#444] transition-colors;
   }
 }
+
+@keyframes glowRotate {
+  0% {
+    filter: drop-shadow(10px 0 10px rgba(255,255,255,0.8));
+  }
+  25% {
+    filter: drop-shadow(0 10px 10px rgba(255,255,255,0.8));
+  }
+  50% {
+    filter: drop-shadow(-10px 0 10px rgba(255,255,255,0.8));
+  }
+  75% {
+    filter: drop-shadow(0 -10px 10px rgba(255,255,255,0.8));
+  }
+  100% {
+    filter: drop-shadow(10px 0 10px rgba(255,255,255,0.8));
+  }
+}
+
+.animate-glow-rotate {
+  animation: glowRotate 4s linear infinite;
+}

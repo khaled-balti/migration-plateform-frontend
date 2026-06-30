@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Activity, PlayCircle, GitCommit, Key, UserPlus, FileText, Download, Clock, ChevronRight } from "lucide-react";
+import { PlayCircle, GitCommit, Key, UserPlus, FileText, Download, Clock, ChevronRight } from "lucide-react";
 import { HistorySkeleton } from "../components/Skeletons";
 import { motion, AnimatePresence } from "framer-motion";
 
